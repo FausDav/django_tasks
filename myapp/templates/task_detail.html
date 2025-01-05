@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Task Detail</h1>
+<h2>{{task.title}}</h2>
+<form method="POST">
+    {% csrf_token %}
+{% block new_task %}{{form.as_div}}{% endblock %}
+<button>
+    Actualizar Tarea
+</button>
+</form>
+
+{% endblock %}

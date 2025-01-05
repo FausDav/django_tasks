@@ -1,0 +1,40 @@
+body {
+    background-color: darkslategrey;
+    color: azure;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu {
+    display: flex;
+    justify-content: start;
+}
+
+nav li {
+    padding: 10px 20px;
+    margin: 0px 10px;
+    background-color: olivedrab;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+nav li:hover {
+    background-color: darkcyan;
+}
+
+ul a {
+    text-decoration: none;
+    color: azure;
+}
+
+ul a:hover {
+    color: lightgreen;
+}

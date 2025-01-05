@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Tasks for {{project.name}}</h1>
+<form method="POST">
+    {% csrf_token %}
+{% block new_task %}{{form.as_div}}{% endblock %}
+<button>
+    Crear Tarea
+</button>
+</form>
+<ul>
+    {% for task  in tasks %}
+        <li><a href="/projects/{{project.id}}/task_check/{{task.id}}">{% if task.done %}✅{% else %}☐{% endif %}</a> <a href="/projects/{{project.id}}/tasks/{{task.id}}"><b>{{task.title}}</b> - {{task.description}}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

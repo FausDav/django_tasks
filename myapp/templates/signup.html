@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h1>Signup</h1>
+<form method="post">
+    {% csrf_token %}
+    {% if error %}
+        <div>{{error}}</div>
+    {% endif %}
+    {{form}}
+    <button type="submit">Crear usuario</button>
+</form>
+
+{% endblock %}
