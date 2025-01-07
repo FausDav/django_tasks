@@ -6,35 +6,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <base href="{% static '/' %}">
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     <link rel="shortcut icon" href="#">
 </head>
-<body>
-    <nav>
-        <ul>
-            <div class="menu">
-                <a href="/"><li>Home</li></a>
-                {% if not user.is_authenticated %}
-                <a href="/login"><li>Login</li></a>
-                <a href="/signup"><li>Signup</li></a>
-                {% else %}
-                <a href="/projects"><li>Projects</li></a>
-                {% endif %}
-                <a href="/about"><li>About</li></a>
+<body class="bg-lime-800 h-screen">
+    <div class="container m-auto h-full flex flex-col text-amber-100">
+        <nav>
+            <ul class="flex justify-between">
+                <div class="flex">
+                    <a class="text-xl m-4 font-semibold" href="/"><li class="bg-lime-700 px-6 py-2 rounded-tl-3xl rounded-br-3xl hover:bg-amber-200 hover:text-lime-700">Home</li></a>
+                    {% if user.is_authenticated %}
+                    <a class="text-xl m-4 font-semibold" href="/projects"><li class="bg-lime-700 px-6 py-2 rounded-tl-3xl rounded-br-3xl hover:bg-amber-200 hover:text-lime-700">Projects</li></a>
+                    {% endif %}
+                    <a class="text-xl m-4 font-semibold" href="/about"><li class="bg-lime-700 px-6 py-2 rounded-tl-3xl rounded-br-3xl hover:bg-amber-200 hover:text-lime-700">About</li></a>
+                </div>
+                <div class="flex">
+                    {% if user.is_authenticated %}
+                    <a class="text-xl m-4 font-semibold" href="/logout"><li class="bg-lime-700 px-6 py-2 rounded-tl-3xl rounded-br-3xl hover:bg-amber-200 hover:text-lime-700">Logout</li></a>
+                    {% else %}
+                    <a class="text-xl m-4 font-semibold" href="/login"><li class="bg-lime-700 px-6 py-2 rounded-tl-3xl rounded-br-3xl hover:bg-amber-200 hover:text-lime-700">Login</li></a>
+                    <a class="text-xl m-4 font-semibold" href="/signup"><li class="bg-lime-700 px-6 py-2 rounded-tl-3xl rounded-br-3xl hover:bg-amber-200 hover:text-lime-700">Signup</li></a>
+                    {% endif %}
+                </div>
+            </ul>
+        </nav>
+        
+        <div class="max-w-screen-lg w-full mx-auto flex-grow mt-16">
+        {% block content %}
+        {% endblock %}
+        </div>
+        <footer class="bg-lime-700 py-4">
+            <div class="container mx-auto px-4">
+            <div class="-mx-4 flex flex-wrap justify-between">
+                <div class="px-4 w-full text-center sm:w-auto sm:text-left">
+                Copyright © 2025
+                <script>new Date().getFullYear() > 2025 && document.write("- " + new Date().getFullYear())</script>
+                FausDav 🦆. All Rights Reserved.
+                </div>
+                <div class="px-4 w-full text-center sm:w-auto sm:text-left">
+                Made with ❤️ by FausDav.
+                </div>
             </div>
-            <div>
-                {% if user.is_authenticated %}
-                <a href="/logout"><li>Logout</li></a>
-                {% endif %}
             </div>
-        </ul>
-    </nav>
-    
-    {% block content %}
-    {% endblock %}
-    
-    <footer>
-        Created by FausDav
-    </footer>
+        </footer>
+    </div>
 </body>
 </html>

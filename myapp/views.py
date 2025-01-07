@@ -36,7 +36,7 @@ def login_form(request):
     else:
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            return render(request,'login.html',{"form":AuthenticationForm, "error":"Invalida username or password"})
+            return render(request,'login.html',{"form":AuthenticationForm, "error":"Invalid username or password"})
         else:
             login(request,user)
             return redirect('/projects',{"form":NewProjectForm})

@@ -1,14 +1,16 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<h1>Login</h1>
-<form method="post">
-    {% csrf_token %}
-    {% if error %}
-        <div>{{error}}</div>
-    {% endif %}
-    {{form}}
-    <button type="submit">Iniciar sesión</button>
-</form>
-
+<div class="w-full">
+    <h1 class="text-5xl font-bold mb-8">Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% if error %}
+            <div>{{error}}</div>
+        {% endif %}
+        {{form}}
+        <button type="submit">Iniciar sesión</button>
+    </form>
+    
+</div>
 {% endblock %}

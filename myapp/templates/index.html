@@ -4,8 +4,9 @@
 {% load static %}
 
 {% block content %}
-<h1>Welcome!</h1><img src="{% static 'arch_black.png' %}" width="50px">
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda doloremque ipsam quidem sunt molestiae. Inventore ipsa animi voluptatum commodi voluptatem officia neque blanditiis? Magnam veritatis, similique voluptas error laudantium ipsa? Suscipit, a natus deleniti repellendus odit eius incidunt quasi quidem!</p>
+<span class="flex items-center mb-8">
+    <h1 class="text-5xl font-bold">Welcome!</h1><img src="{% static 'arch_black.png' %}" width="50px" height="50px">
+</span>
+<p class="text-justify py-3 w-3/5 mx-auto">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda doloremque ipsam quidem sunt molestiae. Inventore ipsa animi voluptatum commodi voluptatem officia neque blanditiis? Magnam veritatis, similique voluptas error laudantium ipsa? Suscipit, a natus deleniti repellendus odit eius incidunt quasi quidem!</p>
 
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Tasks for {{project.name}}</h1>
+<h1 class="text-5xl font-bold mb-8">Tasks for {{project.name}}</h1>
 <form method="POST">
     {% csrf_token %}
 {% block new_task %}{{form.as_div}}{% endblock %}
