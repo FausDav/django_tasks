@@ -31,12 +31,15 @@ def signup_form(request):
 
 
 def login_form(request):
+    form = AuthenticationForm(request)
+    form.fields['username'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4"
+    form.fields['password'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4"
     if(request.method == 'GET'):
-        return render(request,'login.html',{"form":AuthenticationForm})
+        return render(request,'login.html',{"form":form})
     else:
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            return render(request,'login.html',{"form":AuthenticationForm, "error":"Invalid username or password"})
+            return render(request,'login.html',{"form":form, "error":"Invalid username or password"})
         else:
             login(request,user)
             return redirect('/projects',{"form":NewProjectForm})
