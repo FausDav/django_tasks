@@ -3,12 +3,18 @@
 {% block content %}
 <h1 class="text-5xl font-bold mb-8">Signup</h1>
 <form method="post">
+    
     {% csrf_token %}
-    {% if error %}
-        <div>{{error}}</div>
-    {% endif %}
-    {{form}}
-    <button type="submit">Crear usuario</button>
+    <div class="flex flex-col w-2/3 mx-auto text-center">
+    {% for fm in form %}
+        <div class="mt-14 text-2xl">{{fm.label_tag}}</div> 
+        <div>{{fm}}</div>
+        <div class="bg-red-900 text-white w-1/3 mx-auto mt-2 rounded-lg">{{fm.errors|striptags}}</div>
+        
+        <!--<div class="text-xs mt-2">{{fm.help_text}}</div> -->
+    {% endfor %}
+        <button type="submit" class="w-1/3 mt-5 mx-auto text-xl font-semibold bg-lime-700 px-6 py-2 rounded-3xl hover:bg-amber-200 hover:text-lime-700">Crear usuario</button>
+    </div>
 </form>
 
 {% endblock %}

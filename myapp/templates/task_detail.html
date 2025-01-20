@@ -3,13 +3,25 @@
 {% block content %}
 
 <h1 class="text-5xl font-bold mb-8">Task Detail</h1>
-<h2>{{task.title}}</h2>
+{% comment %} <h2 class="text-3xl">{{task.title}}</h2> {% endcomment %}
 <form method="POST">
     {% csrf_token %}
-{% block new_task %}{{form.as_div}}{% endblock %}
-<button>
-    Actualizar Tarea
-</button>
+    <div class="text-2xl w-1/3 mx-auto text-center flex flex-col">
+        <div class='mt-4'>{{form.title.label_tag}}</div>
+        {{form.title}}
+        <div class='mt-4'>{{form.description.label_tag}}</div>
+        {{form.description}}
+        <div class='mt-4'>{{form.done.label_tag}}</div>
+        {{form.done}}
+        <div class="flex justify-evenly">
+            <button class="mt-5 text-xl max-w-48 w-1/3 font-semibold bg-lime-700 px-6 py-2 rounded-3xl hover:bg-amber-200 hover:text-lime-700">
+                Update
+            </button>
+            <a href="{% url 'task_delete' project_id=project_id task_id=task.id %}" class="mt-5 text-xl max-w-48 w-1/3 font-semibold bg-red-700 px-6 py-2 rounded-3xl hover:bg-orange-200 hover:text-orange-700">
+                Delete
+            </a>
+        </div>
+    </div>
 </form>
 
 {% endblock %}

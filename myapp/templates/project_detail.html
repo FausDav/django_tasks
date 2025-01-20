@@ -5,15 +5,30 @@
 <h1 class="text-5xl font-bold mb-8">Tasks for {{project.name}}</h1>
 <form method="POST">
     {% csrf_token %}
-{% block new_task %}{{form.as_div}}{% endblock %}
-<button>
-    Crear Tarea
-</button>
+    <div class="text-2xl w-1/3 mx-auto text-center">
+        {% block new_task %}
+            {{form.title.label_tag}}
+            {{form.title}}
+            {{form.description.label_tag}}
+            {{form.description}}
+        {% endblock %}
+        <button class="mt-5 text-xl font-semibold bg-lime-700 px-6 py-2 rounded-3xl hover:bg-amber-200 hover:text-lime-700">
+            Create Task
+        </button>
+    </div>
 </form>
-<ul>
+    <div class="my-14">
     {% for task  in tasks %}
-        <li><a href="/projects/{{project.id}}/task_check/{{task.id}}">{% if task.done %}✅{% else %}☐{% endif %}</a> <a href="/projects/{{project.id}}/tasks/{{task.id}}"><b>{{task.title}}</b> - {{task.description}}</a></li>
+        <div class="flex mx-auto w-1/3">
+            <div class="{% if task.done %}bg-green-500{% else %}bg-gray-500{% endif %}  w-1/12 h-8 text-center content-center self-center rounded-full mr-2">
+                <a href="/projects/{{project.id}}/task_check/{{task.id}}">{% if task.done %}✅{% else %}☐{% endif %}</a>
+            </div>
+            <a href="/projects/{{project.id}}/tasks/{{task.id}}" class="w-11/12 outline-none" name="{{project.id}}-{{task.id}}">
+            <div  class="mb-2 p-4 rounded-xl bg-lime-950 hover:bg-lime-700">
+                <b>{{task.title}}</b> - {{task.description}}
+            </div>
+        </a>
+        </div>
     {% endfor %}
-</ul>
-
+    </div>
 {% endblock %}

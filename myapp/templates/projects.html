@@ -5,15 +5,20 @@
 <h1 class="text-5xl font-bold mb-8">Projects</h1>
 <form method="POST">
     {% csrf_token %}
-{% block new_project %}{{form.as_div}}{% endblock %}
-<button>
-    Crear Proyecto
-</button>
+    <div class="text-2xl w-1/3 mx-auto text-center">
+        {% block new_project %}
+            <div>{{form.name.label_tag}}</div>
+            <div>{{form.name}}</div>
+        {% endblock %}
+        <button class="mt-5 text-xl font-semibold bg-lime-700 px-6 py-2 rounded-3xl hover:bg-amber-200 hover:text-lime-700 ">
+            Create Project
+        </button>
+    </div>
 </form>
-<ul>
+<div class="my-14">
     {% for project in projects %}
-        <li><a href="/projects/{{ project.id }}"">{{project.name}}</a></li>
+        <a class="" href="/projects/{{ project.id }}""><div class="w-1/3 mx-auto mb-2 p-4 rounded-xl bg-lime-950 hover:bg-lime-700">{{project.name}}</div></a>
     {% endfor %}
-</ul>
+</div>
 
 {% endblock %}

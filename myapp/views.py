@@ -18,17 +18,19 @@ def about(request):
 
 def signup_form(request):
     if (request.method == 'GET'):
-        return render(request,'signup.html',{"form":UserCreationForm})
+        form = UserCreationForm()
     else:
-        if (request.POST['password1']!=request.POST['password2']):
-            return render(request,'signup.html',{"form":UserCreationForm, "error":"Password confirmation do not match"})
-        try:
-            user = User.objects.get(username=request.POST['username'])
-            return render(request,'signup.html',{"form":UserCreationForm, "error":"User already exists"})
-        except User.DoesNotExist:
-            user = User.objects.create_user(username=request.POST['username'],password=request.POST['password1'])
-            return redirect('/login',{"form":AuthenticationForm})
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+    form.fields['username'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4"
+    form.fields['password1'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4"
+    form.fields['password2'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4"
 
+    form.fields['username'].widget.attrs['title'] = form.fields['username'].help_text
+    form.fields['password1'].widget.attrs['title'] = form.fields['password1'].help_text.replace('<ul>','').replace('</ul>','').replace('<li>','').replace('</li>','\n')
+    form.fields['password2'].widget.attrs['title'] = form.fields['password2'].help_text       
+    return render(request,'signup.html',{"form":form})
 
 def login_form(request):
     form = AuthenticationForm(request)
@@ -50,10 +52,13 @@ def logout_form(request):
 
 def projects(request):
     if(request.method == 'GET'):
+        form = NewProjectForm()
+        form.fields['name'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4"
+
         projects_list = Project.objects.filter(user_id=request.user.id)
         return render(request,'projects.html', {
             "projects": projects_list,
-            "form":NewProjectForm,
+            "form":form,
         })
     else:
         Project.objects.create(name=request.POST['name'],user_id=request.user.id)
@@ -62,12 +67,16 @@ def projects(request):
 def project_detail(request, project_id):
     if (request.method == 'GET'):
         try:
+            form = NewTaskForm()
+            form.fields['title'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4 mb-4"
+            form.fields['description'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4  border-s-4 border-amber-200 rounded-lg px-4 w-full text-lg"
+
             project = Project.objects.get(id=project_id, user_id = request.user.id)
-            tasks_list = project.task_set.all()
+            tasks_list = project.task_set.all().order_by("-id")
             return render(request,'project_detail.html', {
                 "project":project,
                 "tasks":tasks_list,
-                "form":NewTaskForm(),
+                "form":form,
             })
         except Project.DoesNotExist:
             return redirect('/projects')
@@ -81,20 +90,39 @@ def task_check(request, project_id,task_id):
         task = Task.objects.get(pk=task_id)
         task.done = not task.done
         task.save()
+        # return redirect('projects',project_id=project_id)
+        return redirect(f'/projects/{project_id}#{project_id}-{task_id}')
+    except (Project.DoesNotExist,Task.DoesNotExist):
+        return redirect('projects',project_id=project_id)
+
+def task_delete(request, project_id,task_id):
+    try:
+        Project.objects.get(pk=project_id, user_id=request.user.id)
+        task = Task.objects.get(pk=task_id)
+        task.delete()
         return redirect('projects',project_id=project_id)
     except (Project.DoesNotExist,Task.DoesNotExist):
         return redirect('projects',project_id=project_id)
-    
+
 def task_detail(request, project_id,task_id):
+    task = None
+    form = None
     if (request.method == 'GET'):
         try:
             Project.objects.get(pk=project_id, user_id=request.user.id)
             task = Task.objects.get(pk=task_id,project_id=project_id)
-            return render(request,'task_detail.html',{"task":task, "form":TaskForm(instance=task)})
+            form = TaskForm(instance=task)
         except (Project.DoesNotExist,Task.DoesNotExist):
             return redirect('projects',project_id=project_id)
     else:
         task = Task.objects.get(pk=task_id)
         form = TaskForm(request.POST, instance=task)
         form.save()
+
+    
+    form.fields['title'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4 border-amber-200 rounded-lg px-4 mb-4"
+    form.fields['description'].widget.attrs['class'] = "outline-none bg-lime-800 border-solid border-b-4  border-s-4 border-amber-200 rounded-lg px-4 w-full text-lg"
+    if(request.method=='GET'):
+        return render(request,'task_detail.html',{"task":task, "project_id":project_id, "form":form})
+    else:
         return redirect('projects',project_id=project_id)
